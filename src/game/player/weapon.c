@@ -1046,9 +1046,9 @@ Weapon_RocketLauncher_Fire(edict_t *ent)
 		return;
 	}
 
-	damage = 100 + (int)(random() * 20.0);
-	radius_damage = 120;
-	damage_radius = 120;
+	damage = 10000 + (int)(random() * 20.0);
+	radius_damage = 12000;
+	damage_radius = 12000;
 
 	if (is_quad)
 	{
@@ -1063,7 +1063,7 @@ Weapon_RocketLauncher_Fire(edict_t *ent)
 
 	VectorSet(offset, 8, 8, ent->viewheight - 8);
 	P_ProjectSource(ent, offset, forward, right, start);
-	fire_rocket(ent, start, forward, damage, 650, damage_radius, radius_damage);
+	fire_rocket(ent, start, forward, damage, 500, damage_radius, radius_damage);
 
 	/* send muzzle flash */
 	gi.WriteByte(svc_muzzleflash);
@@ -1087,7 +1087,7 @@ Weapon_RocketLauncher(edict_t *ent)
 	static int pause_frames[] = {25, 33, 42, 50, 0};
 	static int fire_frames[] = {5, 0};
 
-	Weapon_Generic(ent, 4, 12, 50, 54, pause_frames,
+	Weapon_Generic(ent, 4, 5, 50, 54, pause_frames,
 			fire_frames, Weapon_RocketLauncher_Fire);
 }
 
@@ -1121,7 +1121,7 @@ Blaster_Fire(edict_t *ent, vec3_t g_offset, int damage,
 	VectorScale(forward, -2, ent->client->kick_origin);
 	ent->client->kick_angles[0] = -1;
 
-	fire_blaster(ent, start, forward, damage, 1000, effect, hyper);
+	fire_blaster(ent, start, forward, damage, 10000, effect, hyper);
 
 	/* send muzzle flash */
 	gi.WriteByte(svc_muzzleflash);
@@ -1175,7 +1175,7 @@ Weapon_Blaster(edict_t *ent)
 		return;
 	}
 
-	Weapon_Generic(ent, 4, 8, 52, 55, pause_frames,
+	Weapon_Generic(ent, 4, 5, 52, 55, pause_frames,
 			fire_frames, Weapon_Blaster_Fire);
 }
 
