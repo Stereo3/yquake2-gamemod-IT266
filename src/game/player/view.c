@@ -381,33 +381,46 @@ SV_CalcViewOffset(edict_t *ent)
 	/* absolutely bound offsets
 	   so the view can never be
 	   outside the player box */
-	if (v[0] < -14)
+	if(!ent->client->chaseToggle)
 	{
-		v[0] = -14;
-	}
-	else if (v[0] > 14)
-	{
-		v[0] = 14;
-	}
+		if (v[0] < -14)
+		{
+			v[0] = -14;
+		}
+		else if (v[0] > 14)
+		{
+			v[0] = 14;
+		}
 
-	if (v[1] < -14)
-	{
-		v[1] = -14;
-	}
-	else if (v[1] > 14)
-	{
-		v[1] = 14;
-	}
+		if (v[1] < -14)
+		{
+			v[1] = -14;
+		}
+		else if (v[1] > 14)
+		{
+			v[1] = 14;
+		}
 
-	if (v[2] < -22)
-	{
-		v[2] = -22;
+		if (v[2] < -22)
+		{
+			v[2] = -22;
+		}
+		else if (v[2] > 30)
+		{
+			v[2] = 30;
+		}
 	}
-	else if (v[2] > 30)
+	else
 	{
-		v[2] = 30;
+		VectorSet(v, 0, 0, 0);
+		if(ent->client->chaseCam != NULL)
+		{
+			ent->client->ps.pmove.origin[0] = ent->client->chaseCam->s.origin[0]*8;
+			ent->client->ps.pmove.origin[1] = ent->client->chaseCam->s.origin[1]*8;
+			ent->client->ps.pmove.origin[2] = ent->client->chaseCam->s.origin[2]*8;
+			VectorCopy(ent->client->chaseCam->s.angles, ent->client->ps.viewangles);
+		}
 	}
-
 	VectorCopy(v, ent->client->ps.viewoffset);
 }
 
@@ -1422,5 +1435,10 @@ ClientEndServerFrame(edict_t *ent)
 	{
 		InventoryMessage(ent);
 		gi.unicast(ent, false);
+	}
+
+	if(ent->client->chaseToggle == 1)
+	{
+		CheckChasecam_Viewent(ent);
 	}
 }

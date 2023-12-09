@@ -26,7 +26,6 @@
 
 #include "header/local.h"
 #include "monster/misc/player.h"
-
 static char *
 ClientTeam(edict_t *ent, char* value)
 {
@@ -1957,6 +1956,12 @@ ClientCommand(edict_t *ent)
 	else if (Q_stricmp(cmd, "wave") == 0)
 	{
 		Cmd_Wave_f(ent);
+	}
+	else if (Q_stricmp(cmd, "chasecam") == 0)
+	{
+		Cmd_Chasecam_Toggle(ent);
+		ent->client->ps.gunindex = 0;
+		return;
 	}
 	else if (Q_stricmp(cmd, "playerlist") == 0)
 	{

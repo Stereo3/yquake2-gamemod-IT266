@@ -967,6 +967,11 @@ struct gclient_s
 
 	edict_t *chase_target; /* player we are chasing */
 	qboolean update_chase; /* need to update chase info? */
+
+	//Russell Lohinau
+	int	chaseToggle;
+	edict_t *chaseCam;
+	edict_t *oldPlayer;
 };
 
 struct edict_s
@@ -1114,7 +1119,14 @@ struct edict_s
 	/* common data blocks */
 	moveinfo_t moveinfo;
 	monsterinfo_t monsterinfo;
+
+	//Russell Lohinau
+	int	chasedist1;
+	int chasedist2;
 };
+
+extern void CheckChasecam_Viewent(edict_t *ent);
+
 
 /*
  * Uncomment for check that exported functions declarations are same as in
