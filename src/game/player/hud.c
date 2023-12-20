@@ -54,6 +54,7 @@ MoveClientToIntermission(edict_t *ent)
 	ent->client->invincible_framenum = 0;
 	ent->client->breather_framenum = 0;
 	ent->client->enviro_framenum = 0;
+	ent->client->speed_framenum = 0;
 	ent->client->grenade_blew_up = false;
 	ent->client->grenade_time = 0;
 
@@ -342,43 +343,21 @@ void
 HelpComputerMessage(edict_t *ent)
 {
 	char string[1024];
-	char *sk;
 
 	if (!ent)
 	{
 		return;
 	}
 
-	if (skill->value == SKILL_EASY)
-	{
-		sk = "easy";
-	}
-	else if (skill->value == SKILL_MEDIUM)
-	{
-		sk = "medium";
-	}
-	else if (skill->value == SKILL_HARD)
-	{
-		sk = "hard";
-	}
-	else
-	{
-		sk = "hard+";
-	}
-
 	/* send the layout */
 	Com_sprintf(string, sizeof(string),
 			"xv 32 yv 8 picn help " /* background */
-			"xv 202 yv 12 string2 \"%s\" " /* skill */
-			"xv 0 yv 24 cstring2 \"%s\" " /* level name */
-			"xv 0 yv 54 cstring2 \"%s\" " /* help 1 */
-			"xv 0 yv 110 cstring2 \"%s\" " /* help 2 */
-			"xv 50 yv 164 string2 \" kills     goals    secrets\" "
+			"xv 202 yv 12 string2 \"MONKEY\" " /* skill */
+			"xv 0 yv 24 cstring2 \"BANNANA LAND\" " /* level name */
+			"xv 0 yv 54 cstring2 \"ROLL AROUND AND GET TO THE END\" " /* help 1 */
+			"xv 0 yv 110 cstring2 \"COLLECT ALL THE BANNANAS\" " /* help 2 */
+			"xv 50 yv 164 string2 \" BANNANAS    TIME    SECRETS\" "
 			"xv 50 yv 172 string2 \"%3i/%3i     %i/%i       %i/%i\" ",
-			sk,
-			level.level_name,
-			game.helpmessage1,
-			game.helpmessage2,
 			level.killed_monsters, level.total_monsters,
 			level.found_goals, level.total_goals,
 			level.found_secrets, level.total_secrets);
@@ -386,6 +365,28 @@ HelpComputerMessage(edict_t *ent)
 	gi.WriteByte(svc_layout);
 	gi.WriteString(string);
 }
+
+void CustomHelpMessage(edict_t *ent, const char *customText)
+{
+    char string[1024];
+
+    if (!ent || !customText)
+    {
+        return;
+    }
+
+    /* send the layout */
+    Com_sprintf(string, sizeof(string),
+                "xv 32 yv 8 picn help "          /* background */
+                "xv 0 yv 24 cstring2 \"%s\" ",   /* custom text */
+                customText);
+
+    gi.WriteByte(svc_layout);
+    gi.WriteString(string);
+}
+
+
+
 
 void
 InventoryMessage(edict_t *ent)
@@ -499,6 +500,12 @@ G_SetStats(edict_t *ent)
 	else if (ent->client->enviro_framenum > level.framenum)
 	{
 		ent->client->ps.stats[STAT_TIMER_ICON] = gi.imageindex("p_envirosuit");
+		ent->client->ps.stats[STAT_TIMER] =
+			(ent->client->enviro_framenum - level.framenum) / 10;
+	}
+	else if (ent->client->enviro_framenum > level.framenum)
+	{
+		ent->client->ps.stats[STAT_TIMER_ICON] = gi.imageindex("p_speedboost");
 		ent->client->ps.stats[STAT_TIMER] =
 			(ent->client->enviro_framenum - level.framenum) / 10;
 	}

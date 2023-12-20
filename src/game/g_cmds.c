@@ -661,6 +661,35 @@ Cmd_Help_f(edict_t *ent)
 }
 
 void
+Cmd_Help2_f(edict_t *ent)
+{
+	if (!ent)
+	{
+		return;
+	}
+
+	/* this is for backwards compatibility */
+	if (deathmatch->value)
+	{
+		Cmd_Score_f(ent);
+		return;
+	}
+
+	ent->client->showinventory = false;
+	ent->client->showscores = false;
+
+	if (ent->client->showhelp2)
+	{
+		ent->client->showhelp2 = false;
+		return;
+	}
+
+	ent->client->showhelp2 = true;
+	CustomHelpMessage(ent,"THIS IS A TEST");
+	gi.unicast(ent, true);
+}
+
+void
 Cmd_Inven_f(edict_t *ent)
 {
 	gclient_t *cl;
@@ -1865,6 +1894,12 @@ ClientCommand(edict_t *ent)
 	if (Q_stricmp(cmd, "help") == 0)
 	{
 		Cmd_Help_f(ent);
+		return;
+	}
+
+	if (Q_stricmp(cmd, "help2") == 0)
+	{
+		Cmd_Help2_f(ent);
 		return;
 	}
 

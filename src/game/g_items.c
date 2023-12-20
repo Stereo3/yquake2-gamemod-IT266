@@ -26,6 +26,7 @@
 
 #include "header/local.h"
 
+
 #define HEALTH_IGNORE_MAX 1
 #define HEALTH_TIMED 2
 
@@ -562,6 +563,35 @@ Use_Envirosuit(edict_t *ent, gitem_t *item)
 	else
 	{
 		ent->client->enviro_framenum = level.framenum + 300;
+	}
+}
+
+
+void
+Use_Speed_Boost(edict_t *ent, gitem_t *item)
+{
+    if (!ent || !item)
+    {
+        return;
+    }
+	float newSpeed = 300;
+
+
+
+	ent->velocity[0] += newSpeed; 
+    ent->velocity[1] += newSpeed;
+    ent->velocity[2] += newSpeed;
+
+    ent->client->pers.inventory[ITEM_INDEX(item)]--;
+    ValidateSelectedItem(ent);
+
+	if (ent->client->enviro_framenum > level.framenum)
+	{
+		ent->client->enviro_framenum += 100;
+	}
+	else
+	{
+		ent->client->enviro_framenum = level.framenum + 100;
 	}
 }
 
@@ -2580,6 +2610,30 @@ static const gitem_t gameitemlist[] = {
 		0,
 		"items/s_health.wav items/n_health.wav items/l_health.wav items/m_health.wav"
 	},
+
+	{
+		"item_speed",
+		Pickup_Powerup,
+		Use_Speed_Boost,
+		NULL,
+		NULL,
+		"items/pkup.wav",
+		"models/items/enviro/tris.md2", EF_ROTATE,
+		NULL,
+		"p_speedboost",
+		"Speed Boost",
+		2,                    
+		60,                    
+		NULL,
+		IT_POWERUP | IT_INSTANT_USE,                   
+		0,                    
+		NULL,
+		0,
+		"items/airout.wav"
+	},
+
+
+
 
 	/* end of list marker */
 	{NULL}

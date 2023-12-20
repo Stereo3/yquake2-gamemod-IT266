@@ -888,6 +888,7 @@ player_die(edict_t *self, edict_t *inflictor, edict_t *attacker,
 	self->client->invincible_framenum = 0;
 	self->client->breather_framenum = 0;
 	self->client->enviro_framenum = 0;
+	self->client->speed_framenum = 0;
 	self->flags &= ~FL_POWER_ARMOR;
 
 	if (self->health < -40)
@@ -2540,8 +2541,9 @@ void ChasecamRestart (edict_t *ent){
     }
 
     if(ent->owner->waterlevel)
-        return;
-
+	{
+		return;
+	}
     ChasecamStart(ent->owner);
     G_FreeEdict(ent);
 }
@@ -2571,7 +2573,8 @@ void ChasecamRemove (edict_t *ent, char *opt)
         ent->client->chaseCam->classname = "chasecam";
         ent->client->chaseCam->prethink = ChasecamRestart;
         
-    }else if (!strcmp(opt, "off"))
+    }
+	else if (!strcmp(opt, "off"))
     {
         if(ent->client->chaseToggle)
         {
@@ -2725,7 +2728,7 @@ void Cmd_Chasecam_Toggle (edict_t *ent)
 
 void CheckChasecam_Viewent(edict_t *ent)
 {
-    gclient_t   *cl;
+   gclient_t   *cl;
    if(!ent->client->oldPlayer->client)
    {
     cl = (gclient_t*)malloc(sizeof(gclient_t));
@@ -2741,3 +2744,5 @@ void CheckChasecam_Viewent(edict_t *ent)
     gi.linkentity(ent->client->oldPlayer);
    }
 }
+
+//All chasecam code from: https://web.archive.org/web/20051227030921/http://www.planetquake.com/qdevels/quake2/29_6_98.html
