@@ -790,6 +790,7 @@ void G_CheckChaseStats(edict_t *ent);
 void ValidateSelectedItem(edict_t *ent);
 void DeathmatchScoreboardMessage(edict_t *client, edict_t *killer);
 void HelpComputerMessage(edict_t *client);
+void CustomHelpMessage(edict_t *ent, const char *customText);
 void InventoryMessage(edict_t *client);
 
 /* g_pweapon.c */
@@ -900,6 +901,7 @@ struct gclient_s
 	qboolean showinventory; /* set layout stat */
 	qboolean showhelp;
 	qboolean showhelpicon;
+	qboolean showhelp2;
 
 	int ammo_index;
 
@@ -951,6 +953,7 @@ struct gclient_s
 	float invincible_framenum;
 	float breather_framenum;
 	float enviro_framenum;
+	float speed_framenum;
 
 	qboolean grenade_blew_up;
 	float grenade_time;
@@ -967,6 +970,12 @@ struct gclient_s
 
 	edict_t *chase_target; /* player we are chasing */
 	qboolean update_chase; /* need to update chase info? */
+
+	//Russell Lohinau
+	int	chaseToggle;
+	edict_t *chaseCam;
+	edict_t *oldPlayer;
+	qboolean isThirdPerson;
 };
 
 struct edict_s
@@ -1114,7 +1123,14 @@ struct edict_s
 	/* common data blocks */
 	moveinfo_t moveinfo;
 	monsterinfo_t monsterinfo;
+
+	//Russell Lohinau
+	int	chasedist1;
+	int chasedist2;
 };
+
+extern void CheckChasecam_Viewent(edict_t *ent);
+
 
 /*
  * Uncomment for check that exported functions declarations are same as in

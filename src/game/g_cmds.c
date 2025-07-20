@@ -26,7 +26,6 @@
 
 #include "header/local.h"
 #include "monster/misc/player.h"
-
 static char *
 ClientTeam(edict_t *ent, char* value)
 {
@@ -658,6 +657,35 @@ Cmd_Help_f(edict_t *ent)
 	ent->client->showhelp = true;
 	ent->client->pers.helpchanged = 0;
 	HelpComputerMessage(ent);
+	gi.unicast(ent, true);
+}
+
+void
+Cmd_Help2_f(edict_t *ent)
+{
+	if (!ent)
+	{
+		return;
+	}
+
+	/* this is for backwards compatibility */
+	if (deathmatch->value)
+	{
+		Cmd_Score_f(ent);
+		return;
+	}
+
+	ent->client->showinventory = false;
+	ent->client->showscores = false;
+
+	if (ent->client->showhelp2)
+	{
+		ent->client->showhelp2 = false;
+		return;
+	}
+
+	ent->client->showhelp2 = true;
+	CustomHelpMessage(ent,"THIS IS A TEST");
 	gi.unicast(ent, true);
 }
 
@@ -1869,6 +1897,12 @@ ClientCommand(edict_t *ent)
 		return;
 	}
 
+	if (Q_stricmp(cmd, "help2") == 0)
+	{
+		Cmd_Help2_f(ent);
+		return;
+	}
+
 	if (level.intermissiontime)
 	{
 		return;
@@ -1957,6 +1991,12 @@ ClientCommand(edict_t *ent)
 	else if (Q_stricmp(cmd, "wave") == 0)
 	{
 		Cmd_Wave_f(ent);
+	}
+	else if (Q_stricmp(cmd, "chasecam") == 0)
+	{
+		Cmd_Chasecam_Toggle(ent);
+		ent->client->ps.gunindex = 0;
+		return;
 	}
 	else if (Q_stricmp(cmd, "playerlist") == 0)
 	{

@@ -24,6 +24,7 @@
  * =======================================================================
  */
 
+
 #define FRAME_stand01 0
 #define FRAME_stand02 1
 #define FRAME_stand03 2
@@ -224,3 +225,17 @@
 #define FRAME_death308 197
 
 #define MODEL_SCALE 1.000000
+
+void ChasecamTrack (edict_t *ent);
+
+void ChasecamStart (edict_t *ent);
+
+void ChasecamRestart (edict_t *ent);
+
+void ChasecamRemove (edict_t *ent, char *opt);
+
+void ChasecamTrack (edict_t *ent);
+
+void Cmd_Chasecam_Toggle (edict_t *ent);
+
+void CheckChasecam_Viewent(edict_t *ent);

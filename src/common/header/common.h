@@ -194,7 +194,7 @@ enum svc_ops_e
 	svc_bad,
 
 	/* these ops are known to the game dll */
-	svc_muzzleflash,
+	svc_muzzleflash ,
 	svc_muzzleflash2,
 	svc_temp_entity,
 	svc_layout,

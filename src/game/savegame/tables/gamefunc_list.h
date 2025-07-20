@@ -914,6 +914,7 @@
 {"Use_Silencer", (byte *)Use_Silencer},
 {"Use_Invulnerability", (byte *)Use_Invulnerability},
 {"Use_Envirosuit", (byte *)Use_Envirosuit},
+{"Use_Speed_Boost", (byte *)Use_Speed_Boost},
 {"Use_Breather", (byte *)Use_Breather},
 {"Use_Quad", (byte *)Use_Quad},
 {"Pickup_Pack", (byte *)Pickup_Pack},

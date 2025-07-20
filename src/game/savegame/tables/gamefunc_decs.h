@@ -914,6 +914,7 @@ extern qboolean Pickup_Key ( edict_t * ent , edict_t * other ) ;
 extern void Use_Silencer ( edict_t * ent , gitem_t * item ) ;
 extern void Use_Invulnerability ( edict_t * ent , gitem_t * item ) ;
 extern void Use_Envirosuit ( edict_t * ent , gitem_t * item ) ;
+extern void Use_Speed_Boost( edict_t *ent , gitem_t * item);
 extern void Use_Breather ( edict_t * ent , gitem_t * item ) ;
 extern void Use_Quad ( edict_t * ent , gitem_t * item ) ;
 extern qboolean Pickup_Pack ( edict_t * ent , edict_t * other ) ;

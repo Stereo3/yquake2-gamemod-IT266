@@ -1211,4 +1211,8 @@ release/baseq2/game.so : $(GAME_OBJS)
 	${Q}$(CC) $(LDFLAGS) $(GAME_OBJS) $(LDLIBS) -o $@
 endif
 
+install:
+	make all
+	cp -r release/* "/home/stereo/.steam/debian-installation/steamapps/common/Quake 2/rlmod"
+
 # ----------
